@@ -8,15 +8,38 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Efisco Colors</title>
+    <style>
+        .rounded-circle {
+            box-shadow: 0 0 5px 1px black;
+        }
+    </style>
 </head>
-<body class="container-fluid p-0" style="width: 400px">
+<body class="container-fluid p-0" style="width: 250px">
 
     <div class="card border-info">
         <div class="card-header bg-info">
             <p class="card-text text-light">Selecione a cor:</p>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex">
+                    <p class="card-text mr-auto mb-0">Produção</p>
+                    <div id="efisco" class="seletor rounded-circle border border-dark" style="width: 20px; height: 20px;"></div>
+                </li>
+                <li class="list-group-item d-flex">
+                    <p class="card-text mr-auto mb-0">Integração</p>
+                    <div id="efisco1" class="seletor rounded-circle border border-dark" style="width: 20px; height: 20px;"></div>
+                </li>
+                <li class="list-group-item d-flex">
+                    <p class="card-text mr-auto mb-0">Homologação</p>
+                    <div id="efisco2" class="seletor rounded-circle border border-dark" style="width: 20px; height: 20px;"></div>
+                </li>
+                <li class="list-group-item d-flex">
+                    <p class="card-text mr-auto mb-0">Desenvolvimento</p>
+                    <div id="efisco7" class="seletor rounded-circle border border-dark" style="width: 20px; height: 20px;"></div>
+                </li>
+            </ul>
             <input type="text" id='color-picker' value="#bada55"/>
             <input type="text" id='color-picker2' value="#bada55"/>
         </div>

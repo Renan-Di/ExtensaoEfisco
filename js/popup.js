@@ -15,4 +15,20 @@ $(document).ready(function($){
             console.log(ui);
         }
     });
+
+    $('.seletor').each(
+        function (index, item) {
+            inicializarCores(item.id)
+        }
+    );
 });
+
+function mudarCor(pAmbiente, pCor) {
+    $('#' + pAmbiente).css('background-color', pCor);
+}
+
+function inicializarCores(pAmbiente) {
+    chrome.runtime.getBackgroundPage(function (e) {
+        console.log(e.getCor(pAmbiente, mudarCor));
+    });
+}

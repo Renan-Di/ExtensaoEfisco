@@ -1,34 +1,27 @@
 $(document).ready(function($){
     $('#color-picker').iris({
-        hide: true,
-        target: '#divCor',
+        hide: false,
+        target: "#color-picker-body",
+        border: false,
         change : function (event, ui) {
             console.log(event);
-            console.log(ui);
-        }
-    });
-    $('#color-picker2').iris({
-        hide: true,
-        target: '#divCor',
-        change : function (event, ui) {
-            console.log(event);
-            console.log(ui);
+            console.log(ui.color.toString());
         }
     });
 
     $('.seletor').each(
         function (index, item) {
-            inicializarCores(item.id)
+            mudarCor(item.id)
         }
     );
 });
 
-function mudarCor(pAmbiente, pCor) {
+function mudarCorDiv(pAmbiente, pCor) {
     $('#' + pAmbiente).css('background-color', pCor);
 }
 
-function inicializarCores(pAmbiente) {
+function mudarCor(pAmbiente) {
     chrome.runtime.getBackgroundPage(function (e) {
-        console.log(e.getCor(pAmbiente, mudarCor));
+        console.log(e.getCor(pAmbiente, mudarCorDiv));
     });
 }

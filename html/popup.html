@@ -7,45 +7,85 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Efisco Colors</title>
     <style>
-        div.seletor {
+        a.seletor {
             border-width: 5px!important;
             width: 25px;
             height: 25px;
         }
     </style>
 </head>
-<body class="container-fluid p-0" style="width: 250px">
+<body class="container-fluid p-0" style="width: 300px">
 
     <div class="card border-info">
-        <div class="card-header bg-info">
-            <p class="card-text text-light">Selecione a cor:</p>
+        <div class="card-header bg-info text-center">
+            <p class="card-text text-light">
+                <i class="material-icons align-middle">palette</i>
+                Efisco Colors
+            </p>
         </div>
         <div class="card-body p-0">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex">
                     <p class="card-text mr-auto mb-0">Produção</p>
-                    <div id="efisco" class="seletor rounded-circle border border-dark"></div>
+                    <a href="#" id="efisco" class="seletor rounded-circle border border-dark" data-toggle="modal" data-target="#modalColorPicker"></a>
                 </li>
                 <li class="list-group-item d-flex">
                     <p class="card-text mr-auto mb-0">Integração</p>
-                    <div id="efisco1" class="seletor rounded-circle border border-dark"></div>
+                    <a href="#" id="efisco1" class="seletor rounded-circle border border-dark"></a>
                 </li>
                 <li class="list-group-item d-flex">
                     <p class="card-text mr-auto mb-0">Homologação</p>
-                    <div id="efisco2" class="seletor rounded-circle border border-dark"></div>
+                    <a href="#" id="efisco2" class="seletor rounded-circle border border-dark"></a>
                 </li>
                 <li class="list-group-item d-flex">
                     <p class="card-text mr-auto mb-0">Desenvolvimento</p>
-                    <div id="efisco7" class="seletor rounded-circle border border-dark"></div>
+                    <a href="#" id="efisco7" class="seletor rounded-circle border border-dark"></a>
+                </li>
+                <li class="list-group-item">
+                    <div class="btn-group w-100" role="group">
+                        <a href="#" class="btn btn-sm btn-outline-info w-100">
+                            <i class="material-icons align-middle">visibility</i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-info w-100">
+                            <i class="material-icons align-middle">history</i>
+                        </a>
+                    </div>
                 </li>
             </ul>
-            <input type="text" id='color-picker' value="#bada55"/>
-            <input type="text" id='color-picker2' value="#bada55"/>
         </div>
         <div id="divCor"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalColorPicker" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body pb-0">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="material-icons align-middle">palette</i></span>
+                        </div>
+                        <input type="text" id='color-picker' value="#006CA9" class="form-control text-center" placeholder="#006CA9"/>
+                    </div>
+                    <div id="color-picker-body" class="d-flex justify-content-center mb-2"></div>
+                </div>
+                <div class="modal-footer d-flex justify-content-around" style="padding: .75rem 1.25rem;">
+                    <div class="btn-group w-100" role="group">
+                        <a href="#" class="btn btn-sm btn-outline-success w-100">
+                            <i class="material-icons align-middle">save</i>
+                            Salvar
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-danger w-100" data-dismiss="modal">
+                            <i class="material-icons align-middle">cancel</i>
+                            Cancelar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 <!-- Optional JavaScript -->

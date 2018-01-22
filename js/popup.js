@@ -4,8 +4,7 @@ $(document).ready(function($){
         target: "#color-picker-body",
         border: false,
         change : function (event, ui) {
-            console.log(event);
-            console.log(ui.color.toString());
+            console.log(arguments);
         }
     });
 
@@ -25,24 +24,39 @@ $(document).ready(function($){
     $('#modalColorPicker').on('show.bs.modal', function (event) {
         var bgColor = $(event.relatedTarget).css('background-color');
         $('#color-picker').iris('color', new Color(bgColor).toString());
+        var id =  $(event.relatedTarget).get(0).id;
+        $('#btnSalvar').attr('data-ambiente', id);
     });
 
     mudarStatusAtivacao();
 
     $('#statusAtivacao').on('click', function () {
         chrome.runtime.getBackgroundPage(function (e) {
-            e.getConfig('ativado', function (pConfiguracao, result) {
-                result.value = !result.value;
-                e.setConfig(result, function () {
-                    mudarBotaoStatus(result);
+            e.getConfig('ativado', function (pResult) {
+                pResult.value = !pResult.value;
+                e.setConfig(pResult, function () {
+                    mudarBotaoStatus(pResult);
                 });
+            });
+        });
+    });
+    
+    $('#btnSalvar').on('click', function (event) {
+        var cor = {
+            ambiente: $('#btnSalvar').attr('data-ambiente'),
+            cor: $('#color-picker').iris('color')
+        };
+        chrome.runtime.getBackgroundPage(function (e) {
+            e.setCor(cor, function () {
+                mudarCorDiv(cor);
+                $('#modalColorPicker').modal('hide');
             });
         });
     });
 });
 
-function mudarCorDiv(pAmbiente, pCor) {
-    $('#' + pAmbiente).css('background-color', pCor.cor);
+function mudarCorDiv(pCor) {
+    $('#' + pCor.ambiente).css('background-color', pCor.cor);
 }
 
 function mudarCor(pAmbiente) {
@@ -52,7 +66,6 @@ function mudarCor(pAmbiente) {
 }
 
 function mudarBotaoStatus(pStatus) {
-    // language=JQuery-CSS
     $('#statusAtivacao').find('> i').html(pStatus.value ? 'visibility' : 'visibility_off');
 }
 

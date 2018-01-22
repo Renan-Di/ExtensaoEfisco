@@ -14,6 +14,19 @@
     "persistent": false
   },
 
+  "content_scripts": [
+    {
+      "matches": ["https://efisco.sefaz.pe.gov.br/*",
+                  "https://efisco1.sefaz.pe.gov.br/*",
+                  "https://efisco3.sefaz.pe.gov.br/*",
+                  "https://efisco2.sefaz.pe.gov.br/*",
+                  "http://efisco7.sefaz.pe.gov.br/*"]
+      ,
+      "js" : ["js/main.js"],
+      "run_at": "document_end"
+    }
+  ],
+
   "icons": {
     "256" : "img/icon.png"
   },

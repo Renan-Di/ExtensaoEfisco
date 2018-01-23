@@ -37,6 +37,7 @@ $(document).ready(function($){
                 e.setConfig(pResult, function () {
                     mudarBotaoStatus(pResult);
                 });
+                e.atualizarPaginas();
             });
         });
     });
@@ -50,6 +51,19 @@ $(document).ready(function($){
             e.setCor(cor, function () {
                 mudarCorDiv(cor);
                 $('#modalColorPicker').modal('hide');
+            });
+            e.atualizarPaginas();
+        });
+    });
+
+    $('#btnPadroes').on('click', function () {
+        chrome.runtime.getBackgroundPage(function (e) {
+            e.restaurarPadroes(function () {
+                $('.seletor').each(
+                    function (index, item) {
+                        mudarCor(item.id)
+                    }
+                );
             });
         });
     });

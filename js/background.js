@@ -6,6 +6,13 @@ const producao = "efisco";
 const integracao = "efisco1";
 const homologacao = "efisco2";
 const desenvolvimento = "efisco7";
+const regexAmbiente = /http[s]?:\/\/(efisco[0-9]?)\.sefaz\.pe\.gov\.br/;
+const defaultColor = [
+    {"ambiente" : producao, "cor" : "#006CA9"},
+    {"ambiente" : integracao, "cor" : "#006CA9"},
+    {"ambiente" : homologacao, "cor" : "#006CA9"},
+    {"ambiente" : desenvolvimento, "cor" : "#006CA9"}
+];
 
 function openDatabase (dbName, dbVersion) {
     return new Promise(function (resolve, reject) {
@@ -20,10 +27,9 @@ function openDatabase (dbName, dbVersion) {
             config.add({config: "ativado", value : false});
 
             var ambiente = db.createObjectStore(tabelaAmbientes, { keyPath: "ambiente" });
-            ambiente.add({"ambiente" : producao, "cor" : "#006CA9"});
-            ambiente.add({"ambiente" : integracao, "cor" : "#006CA9"});
-            ambiente.add({"ambiente" : homologacao, "cor" : "#006CA9"});
-            ambiente.add({"ambiente" : desenvolvimento, "cor" : "#006CA9"});
+            for (var indice in defaultColor) {
+                ambiente.add(defaultColor[indice]);
+            }
         };
 
         request.onsuccess = function (event) {
@@ -69,16 +75,6 @@ function getTabela(pTabela, pTransactionMode) {
     });
 }
 
-function getTabelaConfig(pTransactionMode) {
-    return new Promise(function (resolve, reject) {
-        openDatabase(dbName, dbVersion).then(function (db) {
-            openObjectStore(db, tabelaConfig, pTransactionMode).then(function (objectStore) {
-                resolve(objectStore);
-            }).catch(reject);
-        });
-    });
-}
-
 function getConfig(keyPath, callBack) {
     getTabela(tabelaConfig, 'readonly').then(function (objectStore) {
         getObject(objectStore, keyPath).then(
@@ -117,6 +113,12 @@ function setCor(object, callback) {
     });
 }
 
+function restaurarPadroes(pCallback) {
+    for (var indice in defaultColor) {
+        setCor(defaultColor[indice], pCallback);
+    }
+}
+
 function atualizar(details) {
     switch (details.reason) {
         case "install":
@@ -138,3 +140,43 @@ function atualizar(details) {
 }
 
 chrome.runtime.onInstalled.addListener(atualizar);
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        var resposta = {};
+        getConfig('ativado', function (status) {
+            getCor(request.ambiente, function (cor) {
+                resposta.status = status.value;
+                resposta.corInicial = cor.cor;
+                var color = new Color(cor.cor);
+                color.l((color.l() + 10)%100);
+                resposta.corFinal = color.toString();
+                sendResponse(resposta);
+            })
+        });
+        return true;
+    });
+
+function atualizarPaginas() {
+    var urls = ["https://efisco.sefaz.pe.gov.br/*",
+        "https://efisco1.sefaz.pe.gov.br/*",
+        "https://efisco3.sefaz.pe.gov.br/*",
+        "https://efisco2.sefaz.pe.gov.br/*",
+        "http://efisco7.sefaz.pe.gov.br/*"];
+
+    chrome.tabs.query({url: urls}, function (tabs) {
+        for (var indice in tabs) {
+            getConfig('ativado', function (status) {
+                getCor(regexAmbiente.exec(tabs[indice].url)[1], function (cor) {
+                    var resposta = {};
+                    resposta.status = status.value;
+                    resposta.corInicial = cor.cor;
+                    var color = new Color(cor.cor);
+                    color.l((color.l() + 10)%100);
+                    resposta.corFinal = color.toString();
+                    chrome.tabs.sendMessage(tabs[indice].id, resposta);
+                })
+            });
+        }
+    });
+}

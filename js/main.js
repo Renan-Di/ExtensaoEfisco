@@ -16,17 +16,27 @@ function criarTagCSS(response) {
         ' TH.headertabeladadosalinhadocentro,' +
         ' .ModalWindowTitle {' +
         '\t    background: ' + response.background + ';' +
-        '\t    background-image: linear-gradient(' + response.foreground + ', ' + response.background + ');}';
+        '\t    background-image: linear-gradient(' + response.corInicial + ', ' + response.corFinal + ');}';
 }
 
 function removerTagCSS() {
-    document.getElementsByTagName('head')[0].removeChild(document.getElementById(idTagStyle));
+    var styleTag = document.getElementById(idTagStyle);
+    if (styleTag) {
+        document.getElementsByTagName('head')[0].removeChild(styleTag);
+    }
 }
 
-chrome.runtime.sendMessage({ambiente: regexAmbiente.exec(location.href)[1]}, function(response) {
-    if (response.isAtivado) {
+function tratarResposta(response) {
+    if (response.status) {
         criarTagCSS(response);
     } else {
         removerTagCSS();
     }
-});
+}
+
+chrome.runtime.sendMessage({ambiente: regexAmbiente.exec(location.href)[1]}, tratarResposta);
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        tratarResposta(request);
+    });
